@@ -282,9 +282,9 @@ function PrefectureList() {
                 <div key={pref.id} style={{ position: 'relative' }}>
                   <Link
                     to={`/prefecture/${pref.id}`}
-                    className={styles.prefectureCard}
+                    className={`${styles.prefectureCard} ${isComplete ? styles.prefectureCardComplete : ''}`}
                   >
-                    <div className={styles.prefectureCardContent} style={{ paddingRight: '2.5rem', paddingLeft: isComplete ? '2rem' : undefined }}>
+                    <div className={styles.prefectureCardContent} style={{ paddingRight: '2.5rem' }}>
                       <span className={styles.prefectureName}>
                         {pref.name}
                       </span>
@@ -292,9 +292,6 @@ function PrefectureList() {
                         {photoCount}枚
                       </span>
                     </div>
-                    {isComplete && (
-                      <span className={styles.completeIcon}>🎉</span>
-                    )}
                   </Link>
                   
                   {/* 非表示ボタン */}

@@ -36,6 +36,16 @@
   color: rgba(255, 255, 255, 0.9);
 }
 
+.prefectureCardComplete {
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.2) 0%, rgba(255, 152, 0, 0.2) 100%) !important;
+  border: 2px solid rgba(255, 193, 7, 0.6) !important;
+}
+
+.prefectureCardComplete:hover {
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.3) 0%, rgba(255, 152, 0, 0.3) 100%) !important;
+  border-color: rgba(255, 193, 7, 0.8) !important;
+}
+
 .prefectureCardContent {
   display: flex;
   justify-content: space-between;
@@ -52,16 +62,6 @@
   color: var(--text-secondary);
   font-size: 0.9rem;
   transition: color 0.3s ease;
-}
-
-.completeIcon {
-  position: absolute;
-  top: 0.5rem;
-  left: 0.5rem;
-  font-size: 1.2rem;
-  line-height: 1;
-  z-index: 5;
-  pointer-events: none;
 }
 
 /* ヘッダー行（タイトルとハンバーガーボタン） */
