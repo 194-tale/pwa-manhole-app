@@ -284,7 +284,7 @@ function PrefectureList() {
                     to={`/prefecture/${pref.id}`}
                     className={styles.prefectureCard}
                   >
-                    <div className={styles.prefectureCardContent} style={{ paddingRight: '2.5rem' }}>
+                    <div className={styles.prefectureCardContent} style={{ paddingRight: '2.5rem', paddingLeft: isComplete ? '2rem' : undefined }}>
                       <span className={styles.prefectureName}>
                         {pref.name}
                       </span>
