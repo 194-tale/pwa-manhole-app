@@ -4,6 +4,7 @@
   max-width: 1200px;
   margin: 0 auto;
   min-height: 100vh;
+  scroll-padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 5rem);
 }
 
 .content {
@@ -309,14 +310,15 @@
 @media (max-width: 768px) {
   .container {
     padding: 0.5rem;
-    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px) + 6rem);
+    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px) + 8rem);
     padding-top: 0.5rem;
+    scroll-padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 8rem);
   }
 
   .content {
     padding: 1rem;
-    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px) + 6rem);
-    margin-bottom: calc(env(safe-area-inset-bottom, 0px) + 2rem);
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px) + 8rem);
+    margin-bottom: calc(env(safe-area-inset-bottom, 0px) + 3rem);
   }
 
   .header {
@@ -332,8 +334,9 @@
   }
 
   .memoActions {
-    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px) + 5rem);
-    margin-bottom: 2rem;
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px) + 7rem);
+    margin-bottom: 3rem;
+    scroll-margin-bottom: calc(env(safe-area-inset-bottom, 0px) + 7rem);
   }
 
   .memoSection {
@@ -341,8 +344,15 @@
   }
 
   .deleteSection {
-    padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px) + 5rem);
-    margin-bottom: 2rem;
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px) + 7rem);
+    margin-bottom: 3rem;
+    scroll-margin-bottom: calc(env(safe-area-inset-bottom, 0px) + 7rem);
+  }
+
+  .cropActions {
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px) + 7rem);
+    margin-bottom: 3rem;
+    scroll-margin-bottom: calc(env(safe-area-inset-bottom, 0px) + 7rem);
   }
 }
 
