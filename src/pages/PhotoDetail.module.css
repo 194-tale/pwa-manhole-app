@@ -309,13 +309,14 @@
 @media (max-width: 768px) {
   .container {
     padding: 0.5rem;
-    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px) + 3rem);
+    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px) + 6rem);
+    padding-top: 0.5rem;
   }
 
   .content {
     padding: 1rem;
-    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px) + 3rem);
-    margin-bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem);
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px) + 6rem);
+    margin-bottom: calc(env(safe-area-inset-bottom, 0px) + 2rem);
   }
 
   .header {
@@ -331,11 +332,17 @@
   }
 
   .memoActions {
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px) + 5rem);
+    margin-bottom: 2rem;
+  }
+
+  .memoSection {
     padding-bottom: 1rem;
   }
 
   .deleteSection {
-    padding-bottom: 2rem;
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px) + 5rem);
+    margin-bottom: 2rem;
   }
 }
 
