@@ -287,12 +287,14 @@ function PrefectureList() {
                     <div className={styles.prefectureCardContent} style={{ paddingRight: '2.5rem' }}>
                       <span className={styles.prefectureName}>
                         {pref.name}
-                        {isComplete && <span className={styles.completeIcon}>🎉</span>}
                       </span>
                       <span className={styles.prefectureCount}>
                         {photoCount}枚
                       </span>
                     </div>
+                    {isComplete && (
+                      <span className={styles.completeIcon}>🎉</span>
+                    )}
                   </Link>
                   
                   {/* 非表示ボタン */}
