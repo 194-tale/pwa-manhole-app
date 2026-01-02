@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { getSettings, updateSettings } from '../services/db/settingsDB';
 import { getTotalStorageSize, getStorageQuota, formatBytes } from '../utils/storageSize';
 import { downloadExportData, importFromFile } from '../services/export/exportData';
+import { getAllPhotos } from '../services/db/photoDB';
+import { getAllPrefectures } from '../services/db/prefectureDB';
+import { PREFECTURE_LIST } from '../types/prefecture';
 import { activatePremiumFeatures, deactivatePremiumFeatures, isPremiumEnabled } from '../services/license/licenseService';
 import type { Settings, CompressionQuality } from '../types/settings';
 import styles from './Settings.module.css';
@@ -17,6 +20,7 @@ function SettingsPage() {
   const [exporting, setExporting] = useState(false);
   const [importing, setImporting] = useState(false);
   const [licenseKey, setLicenseKey] = useState('');
+  const [exportingReport, setExportingReport] = useState(false);
   const [isActivatingLicense, setIsActivatingLicense] = useState(false);
   const [isDeactivatingLicense, setIsDeactivatingLicense] = useState(false);
   const [premiumEnabled, setPremiumEnabled] = useState(false);
@@ -127,6 +131,130 @@ function SettingsPage() {
       setError(err instanceof Error ? err.message : 'データのエクスポートに失敗しました');
     } finally {
       setExporting(false);
+    }
+  };
+
+  // 実績レポートをエクスポート（テキスト形式）
+  const handleExportReport = async () => {
+    setExportingReport(true);
+    setError(null);
+
+    try {
+      const [photos, prefectures] = await Promise.all([
+        getAllPhotos(),
+        getAllPrefectures(),
+      ]);
+
+      const prefectureMap = new Map(prefectures.map(p => [p.id, p]));
+      
+      // 都道府県ごとの写真数を集計
+      const photoCountByPrefecture = new Map<string, number>();
+      photos.forEach(photo => {
+        const count = photoCountByPrefecture.get(photo.prefectureId) || 0;
+        photoCountByPrefecture.set(photo.prefectureId, count + 1);
+      });
+
+      // テキストレポートを生成
+      let report = 'ご当地マンホールアプリ 実績レポート\n';
+      report += `作成日時: ${new Date().toLocaleString('ja-JP')}\n`;
+      report += `\n`;
+      report += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+      report += `📊 総合統計\n`;
+      report += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+      report += `総撮影枚数: ${photos.length}枚\n`;
+      report += `撮影済み都道府県数: ${photoCountByPrefecture.size}都道府県\n`;
+      report += `\n`;
+
+      // 地方別の集計
+      const regions = [
+        { name: '北海道・東北', ids: ['01', '02', '03', '04', '05', '06', '07'] },
+        { name: '関東', ids: ['08', '09', '10', '11', '12', '13', '14'] },
+        { name: '中部', ids: ['15', '16', '17', '18', '19', '20', '21', '22', '23'] },
+        { name: '近畿', ids: ['24', '25', '26', '27', '28', '29', '30'] },
+        { name: '中国・四国', ids: ['31', '32', '33', '34', '35', '36', '37', '38', '39'] },
+        { name: '九州・沖縄', ids: ['40', '41', '42', '43', '44', '45', '46', '47'] },
+      ];
+
+      report += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+      report += `🗺️ 地方別統計\n`;
+      report += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+      regions.forEach(region => {
+        const regionCount = region.ids.reduce((sum, id) => {
+          return sum + (photoCountByPrefecture.get(id) || 0);
+        }, 0);
+        report += `${region.name}: ${regionCount}枚\n`;
+      });
+      report += `\n`;
+
+      // 都道府県別の詳細
+      report += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+      report += `📍 都道府県別詳細\n`;
+      report += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+      
+      regions.forEach(region => {
+        report += `\n【${region.name}】\n`;
+        region.ids.forEach(prefId => {
+          const prefecture = PREFECTURE_LIST.find(p => p.id === prefId);
+          const count = photoCountByPrefecture.get(prefId) || 0;
+          const prefData = prefectureMap.get(prefId);
+          const totalManholes = prefData?.totalManholes;
+          
+          if (prefecture) {
+            report += `  ${prefecture.name}: ${count}枚`;
+            if (totalManholes && totalManholes > 0) {
+              const percentage = ((count / totalManholes) * 100).toFixed(1);
+              report += ` (目標: ${totalManholes}枚、達成率: ${percentage}%)`;
+              if (count >= totalManholes) {
+                report += ` 🎉`;
+              }
+            }
+            report += `\n`;
+          }
+        });
+      });
+
+      report += `\n`;
+      report += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+      report += `📝 写真一覧\n`;
+      report += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+      
+      // 撮影日時順にソート
+      const sortedPhotos = [...photos].sort((a, b) => {
+        const dateA = a.takenAt ? new Date(a.takenAt).getTime() : 0;
+        const dateB = b.takenAt ? new Date(b.takenAt).getTime() : 0;
+        return dateB - dateA;
+      });
+
+      sortedPhotos.forEach((photo, index) => {
+        const prefecture = PREFECTURE_LIST.find(p => p.id === photo.prefectureId);
+        const prefName = prefecture?.name || '不明';
+        report += `\n${index + 1}. ${prefName}`;
+        if (photo.takenAt) {
+          report += ` (${new Date(photo.takenAt).toLocaleDateString('ja-JP')})`;
+        }
+        if (photo.memo) {
+          report += `\n   メモ: ${photo.memo}`;
+        }
+        if (photo.favorite) {
+          report += ` ⭐`;
+        }
+      });
+
+      // テキストファイルとしてダウンロード
+      const blob = new Blob([report], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `manhole-app-report-${new Date().toISOString().split('T')[0]}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('レポートエクスポートエラー:', err);
+      setError(err instanceof Error ? err.message : 'レポートのエクスポートに失敗しました');
+    } finally {
+      setExportingReport(false);
     }
   };
 
@@ -461,9 +589,18 @@ function SettingsPage() {
             <button
               className={styles.exportButton}
               onClick={handleExport}
-              disabled={exporting || importing}
+              disabled={exporting || importing || exportingReport}
             >
-              {exporting ? 'エクスポート中...' : '📥 データをエクスポート'}
+              {exporting ? 'エクスポート中...' : '📥 データをエクスポート（JSON）'}
+            </button>
+
+            <button
+              className={styles.exportButton}
+              onClick={handleExportReport}
+              disabled={exporting || importing || exportingReport}
+              style={{ marginTop: '0.5rem' }}
+            >
+              {exportingReport ? 'エクスポート中...' : '📄 実績レポートをエクスポート（テキスト）'}
             </button>
 
             <div className={styles.importContainer}>

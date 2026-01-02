@@ -8,20 +8,50 @@ import type { PhotoDB } from '../../types/photo';
 import type { PrefectureDB } from '../../types/prefecture';
 import type { SettingsDB } from '../../types/settings';
 
+// 簡易単語登録システムのデータ型
+interface WordSystemData {
+  words?: Array<{
+    key: string;
+    value: string;
+  }>;
+  history?: Array<{
+    name: string;
+    timestamp: string;
+    words: Array<{
+      key: string;
+      value: string;
+    }>;
+  }>;
+}
+
 interface ExportData {
   version: string;
   exportedAt: string;
-  photos: PhotoDB[];
-  prefectures: PrefectureDB[];
-  settings: SettingsDB;
-  images: Array<{
+  apps: {
+    'manhole-app': {
+      photos: PhotoDB[];
+      prefectures: PrefectureDB[];
+      settings: SettingsDB;
+      images: Array<{
+        id: string;
+        data: string; // Base64エンコードされたBlob
+        type: string;
+      }>;
+    };
+    'word-system'?: WordSystemData; // 簡易単語登録システムのデータ（オプション）
+  };
+  // 後方互換性のため、旧形式もサポート
+  photos?: PhotoDB[];
+  prefectures?: PrefectureDB[];
+  settings?: SettingsDB;
+  images?: Array<{
     id: string;
-    data: string; // Base64エンコードされたBlob
+    data: string;
     type: string;
   }>;
 }
 
-const EXPORT_VERSION = '1.0.0';
+const EXPORT_VERSION = '2.0.0';
 
 /**
  * BlobをBase64文字列に変換
@@ -84,16 +114,20 @@ export async function exportAllData(): Promise<string> {
     const exportData: ExportData = {
       version: EXPORT_VERSION,
       exportedAt: new Date().toISOString(),
-      photos,
-      prefectures,
-      settings: settingsDB || {
-        id: 'app_settings',
-        version: '1.0.0',
-        compressionQuality: 'standard',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+      apps: {
+        'manhole-app': {
+          photos,
+          prefectures,
+          settings: settingsDB || {
+            id: 'app_settings',
+            version: '1.0.0',
+            compressionQuality: 'standard',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          },
+          images: imagesData,
+        },
       },
-      images: imagesData,
     };
 
     return JSON.stringify(exportData, null, 2);
@@ -107,9 +141,11 @@ export async function exportAllData(): Promise<string> {
  * エクスポートデータをダウンロード
  * モバイルブラウザでは共有機能も試行
  */
-export async function downloadExportData(): Promise<void> {
+export async function downloadExportData(wordSystemData?: WordSystemData): Promise<void> {
   try {
-    const data = await exportAllData();
+    const data = wordSystemData 
+      ? await exportWithWordSystem(wordSystemData)
+      : await exportAllData();
     const blob = new Blob([data], { type: 'application/json' });
     const fileName = `manhole-app-backup-${new Date().toISOString().split('T')[0]}.json`;
     
@@ -156,45 +192,138 @@ export async function importAllData(jsonData: string): Promise<void> {
   try {
     const importData: ExportData = JSON.parse(jsonData);
     
-    // バージョンチェック（将来的な拡張用）
-    if (!importData.version || !importData.photos || !importData.prefectures) {
+    // バージョンチェック
+    if (!importData.version) {
+      throw new Error('不正なデータ形式です');
+    }
+
+    // 新形式（apps）と旧形式（直接プロパティ）の両方に対応
+    let manholeAppData: ExportData['apps']['manhole-app'];
+    
+    if (importData.apps && importData.apps['manhole-app']) {
+      // 新形式（v2.0.0以降）
+      manholeAppData = importData.apps['manhole-app'];
+    } else if (importData.photos && importData.prefectures) {
+      // 旧形式（v1.0.0）の後方互換性
+      manholeAppData = {
+        photos: importData.photos,
+        prefectures: importData.prefectures,
+        settings: importData.settings || {
+          id: 'app_settings',
+          version: '1.0.0',
+          compressionQuality: 'standard',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        images: importData.images || [],
+      };
+    } else {
       throw new Error('不正なデータ形式です');
     }
 
     const db = await getDatabase();
     const tx = db.transaction(['photos', 'prefectures', 'settings', 'images'], 'readwrite');
 
-    // 既存データをクリア（オプション：確認後に実行）
+    // 既存データをクリア
     await tx.objectStore('photos').clear();
     await tx.objectStore('prefectures').clear();
     await tx.objectStore('settings').clear();
     await tx.objectStore('images').clear();
 
     // 画像Blobを復元して保存
-    for (const imageData of importData.images) {
+    for (const imageData of manholeAppData.images) {
       const blob = base64ToBlob(imageData.data, imageData.type);
       await tx.objectStore('images').put(blob, imageData.id);
     }
 
     // 写真データを保存
-    for (const photo of importData.photos) {
+    for (const photo of manholeAppData.photos) {
       await tx.objectStore('photos').put(photo);
     }
 
     // 都道府県データを保存
-    for (const prefecture of importData.prefectures) {
+    for (const prefecture of manholeAppData.prefectures) {
       await tx.objectStore('prefectures').put(prefecture);
     }
 
     // 設定を保存
-    if (importData.settings) {
-      await tx.objectStore('settings').put(importData.settings);
+    if (manholeAppData.settings) {
+      await tx.objectStore('settings').put(manholeAppData.settings);
     }
 
     await tx.done;
   } catch (error) {
     console.error('データインポートエラー:', error);
     throw new Error('データのインポートに失敗しました');
+  }
+}
+
+/**
+ * 簡易単語登録システムのデータを追加してエクスポート
+ */
+export async function exportWithWordSystem(wordSystemData?: WordSystemData): Promise<string> {
+  try {
+    const db = await getDatabase();
+    
+    // すべてのデータを取得
+    const [photos, prefectures, settingsDB, imageBlobs] = await Promise.all([
+      db.getAll('photos'),
+      db.getAll('prefectures'),
+      db.get('settings', 'app_settings'),
+      db.getAll('images'),
+    ]);
+
+    // 画像BlobをBase64に変換
+    const imagesData = await Promise.all(
+      imageBlobs.map(async (blob, index) => {
+        const keys = await db.getAllKeys('images');
+        const id = keys[index];
+        const base64 = await blobToBase64(blob as Blob);
+        return {
+          id: id as string,
+          data: base64,
+          type: (blob as Blob).type || 'image/jpeg',
+        };
+      })
+    );
+
+    const exportData: ExportData = {
+      version: EXPORT_VERSION,
+      exportedAt: new Date().toISOString(),
+      apps: {
+        'manhole-app': {
+          photos,
+          prefectures,
+          settings: settingsDB || {
+            id: 'app_settings',
+            version: '1.0.0',
+            compressionQuality: 'standard',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          },
+          images: imagesData,
+        },
+        ...(wordSystemData && { 'word-system': wordSystemData }),
+      },
+    };
+
+    return JSON.stringify(exportData, null, 2);
+  } catch (error) {
+    console.error('データエクスポートエラー:', error);
+    throw new Error('データのエクスポートに失敗しました');
+  }
+}
+
+/**
+ * 統合データから簡易単語登録システムのデータを取得
+ */
+export function getWordSystemData(jsonData: string): WordSystemData | null {
+  try {
+    const importData: ExportData = JSON.parse(jsonData);
+    return importData.apps?.['word-system'] || null;
+  } catch (error) {
+    console.error('データ読み込みエラー:', error);
+    return null;
   }
 }
 

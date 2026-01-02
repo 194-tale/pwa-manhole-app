@@ -1,5 +1,6 @@
 .container {
   padding: 1rem;
+  padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
   max-width: 1200px;
   margin: 0 auto;
   min-height: 100vh;
@@ -9,7 +10,9 @@
   background: var(--card-bg);
   border-radius: 16px;
   padding: 1.5rem;
+  padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px) + 2rem);
   box-shadow: 0 4px 16px var(--shadow-color);
+  margin-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 .loading,
@@ -306,10 +309,13 @@
 @media (max-width: 768px) {
   .container {
     padding: 0.5rem;
+    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px) + 3rem);
   }
 
   .content {
     padding: 1rem;
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px) + 3rem);
+    margin-bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem);
   }
 
   .header {
@@ -322,6 +328,14 @@
 
   .image {
     max-height: 60vh;
+  }
+
+  .memoActions {
+    padding-bottom: 1rem;
+  }
+
+  .deleteSection {
+    padding-bottom: 2rem;
   }
 }
 
