@@ -7,7 +7,7 @@ import { activatePremiumFeatures, deactivatePremiumFeatures, isPremiumEnabled } 
 import type { Settings, CompressionQuality } from '../types/settings';
 import styles from './Settings.module.css';
 
-function Settings() {
+function SettingsPage() {
   const navigate = useNavigate();
   const [settings, setSettings] = useState<Settings | null>(null);
   const [totalSize, setTotalSize] = useState<number>(0);
@@ -501,5 +501,5 @@ function Settings() {
   );
 }
 
-export default Settings;
+export default SettingsPage;
 
