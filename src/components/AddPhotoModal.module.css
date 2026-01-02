@@ -1,0 +1,287 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal {
+  background: var(--card-bg);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.closeButton:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.1);
+  color: var(--text-primary);
+}
+
+.closeButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.content {
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.errorMessage {
+  background: rgba(255, 152, 0, 0.1);
+  border: 1px solid rgba(255, 152, 0, 0.5);
+  border-radius: 8px;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  color: #d97706;
+  font-size: 0.9rem;
+}
+
+.fileSelection {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.actionButton {
+  padding: 1rem;
+  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px var(--button-shadow);
+}
+
+.actionButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--button-shadow-hover);
+}
+
+.actionButton:active {
+  transform: translateY(0);
+}
+
+.preview {
+  margin-bottom: 1.5rem;
+}
+
+.previewImage {
+  width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: #f5f5f5;
+  margin-bottom: 0.75rem;
+}
+
+.previewActions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.changeButton,
+.cropButton {
+  flex: 1;
+  padding: 0.75rem;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.changeButton:hover:not(:disabled),
+.cropButton:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.changeButton:disabled,
+.cropButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cropButton {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+  border-color: rgba(139, 92, 246, 0.3);
+  color: var(--bg-gradient-start);
+  font-weight: 600;
+}
+
+.cropButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%);
+}
+
+.backToPreviewButton {
+  width: 100%;
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.backToPreviewButton:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.backToPreviewButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.memoSection {
+  margin-bottom: 1.5rem;
+}
+
+.label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 100px;
+  color: var(--text-primary);
+  background: white;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--bg-gradient-start);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.textarea:disabled {
+  background: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.cancelButton,
+.saveButton {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancelButton {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--text-primary);
+}
+
+.cancelButton:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.saveButton {
+  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+  color: white;
+  box-shadow: 0 2px 8px var(--button-shadow);
+}
+
+.saveButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--button-shadow-hover);
+}
+
+.saveButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+  .overlay {
+    padding: 0;
+  }
+
+  .modal {
+    max-width: 100%;
+    max-height: 100vh;
+    border-radius: 16px 16px 0 0;
+    margin-top: auto;
+  }
+
+  .title {
+    font-size: 1.1rem;
+  }
+}
+

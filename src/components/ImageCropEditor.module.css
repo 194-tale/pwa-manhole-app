@@ -1,0 +1,159 @@
+.container {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  align-items: center;
+  text-align: center;
+}
+
+.hint {
+  font-size: 0.8rem;
+  font-weight: normal;
+  color: var(--text-secondary);
+}
+
+.imageContainer {
+  position: relative;
+  display: inline-block;
+  border-radius: 12px;
+  overflow: hidden;
+  background: transparent;
+  cursor: move;
+  user-select: none;
+  touch-action: none;
+  line-height: 0;
+}
+
+.image {
+  max-width: 100%;
+  max-height: 70vh;
+  height: auto;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+  border-radius: 12px;
+}
+
+.cropBox {
+  position: absolute;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5), 0 0 0 3px var(--bg-gradient-start);
+  cursor: move;
+}
+
+.cropBoxBorder {
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 2px dashed rgba(255, 255, 255, 0.8);
+  pointer-events: none;
+}
+
+.cropBoxHandles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.handle {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: var(--bg-gradient-start);
+  border: 2px solid white;
+  border-radius: 50%;
+  pointer-events: all;
+  cursor: nwse-resize;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.handle:hover {
+  transform: scale(1.2);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+}
+
+.handleTopLeft {
+  top: -6px;
+  left: -6px;
+  cursor: nwse-resize;
+}
+
+.handleTopRight {
+  top: -6px;
+  right: -6px;
+  cursor: nesw-resize;
+}
+
+.handleBottomLeft {
+  bottom: -6px;
+  left: -6px;
+  cursor: nesw-resize;
+}
+
+.handleBottomRight {
+  bottom: -6px;
+  right: -6px;
+  cursor: nwse-resize;
+}
+
+.instructions {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: rgba(139, 92, 246, 0.1);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.instructions p {
+  margin: 0;
+}
+
+/* 詳細画面用の大きなサイズ - 通常表示と同じサイズ */
+.large {
+  max-height: none !important;
+  min-height: auto !important;
+  height: auto !important;
+}
+
+.large .image {
+  max-height: 70vh !important;
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+  .image {
+    max-height: 60vh;
+  }
+
+  .large .image {
+    max-height: 60vh !important;
+  }
+
+  .hint {
+    font-size: 0.75rem;
+  }
+
+  .instructions {
+    font-size: 0.8rem;
+  }
+}
+

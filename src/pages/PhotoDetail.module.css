@@ -1,0 +1,327 @@
+.container {
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.content {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 16px var(--shadow-color);
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-secondary);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.backButton {
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: bold;
+  box-shadow: 0 2px 8px var(--button-shadow);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.backButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--button-shadow-hover);
+}
+
+.headerInfo {
+  flex: 1;
+}
+
+.prefectureName {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.date {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.errorMessage {
+  background: rgba(255, 152, 0, 0.1);
+  border: 1px solid rgba(255, 152, 0, 0.5);
+  border-radius: 8px;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  color: #d97706;
+  font-size: 0.9rem;
+}
+
+.imageContainer {
+  margin-bottom: 1.5rem;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  max-height: 70vh;
+  object-fit: contain;
+  display: block;
+}
+
+.memoSection {
+  margin-bottom: 1.5rem;
+}
+
+.memoHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--text-primary);
+}
+
+.editButton {
+  padding: 0.5rem 1rem;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.editButton:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.memoEdit {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.memoTextarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 100px;
+  color: var(--text-primary);
+  background: white;
+}
+
+.memoTextarea:focus {
+  outline: none;
+  border-color: var(--bg-gradient-start);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.memoTextarea:disabled {
+  background: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.memoActions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.cancelButton,
+.saveButton {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancelButton {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--text-primary);
+}
+
+.cancelButton:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.saveButton {
+  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+  color: white;
+  box-shadow: 0 2px 8px var(--button-shadow);
+}
+
+.saveButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--button-shadow-hover);
+}
+
+.saveButton:disabled,
+.cancelButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.memoDisplay {
+  padding: 0.75rem;
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+  min-height: 60px;
+}
+
+.memoText {
+  margin: 0;
+  color: var(--text-primary);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.memoPlaceholder {
+  margin: 0;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.cropSection {
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cropHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.cropActions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cropButtonSection {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cropEditButton {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--bg-gradient-start);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cropEditButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%);
+}
+
+.cropEditButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.deleteSection {
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.deleteButton {
+  width: 100%;
+  padding: 0.75rem;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: #dc2626;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.deleteButton:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+.deleteButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+  .container {
+    padding: 0.5rem;
+  }
+
+  .content {
+    padding: 1rem;
+  }
+
+  .header {
+    flex-direction: column;
+  }
+
+  .backButton {
+    width: 100%;
+  }
+
+  .image {
+    max-height: 60vh;
+  }
+}
+

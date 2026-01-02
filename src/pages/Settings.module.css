@@ -1,0 +1,474 @@
+.container {
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.content {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 16px var(--shadow-color);
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-secondary);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.backButton {
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: bold;
+  box-shadow: 0 2px 8px var(--button-shadow);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.backButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--button-shadow-hover);
+}
+
+.title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.errorMessage {
+  background: rgba(255, 152, 0, 0.1);
+  border: 1px solid rgba(255, 152, 0, 0.5);
+  border-radius: 8px;
+  padding: 0.75rem;
+  margin-bottom: 1.5rem;
+  color: #d97706;
+  font-size: 0.9rem;
+}
+
+.section {
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.sectionTitle {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--text-primary);
+}
+
+.sectionDescription {
+  margin: 0 0 1rem 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* ストレージ情報 */
+.storageInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.storageRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+}
+
+.storageLabel {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.storageValue {
+  font-weight: bold;
+  color: var(--bg-gradient-start);
+}
+
+.progressContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.progressBar {
+  flex: 1;
+  height: 24px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progressFill {
+  height: 100%;
+  transition: width 0.3s ease, background 0.3s ease;
+  border-radius: 12px;
+}
+
+.progressNormal {
+  background: linear-gradient(90deg, #4ade80 0%, #22c55e 100%);
+}
+
+.progressWarning {
+  background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%);
+}
+
+.progressCritical {
+  background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
+}
+
+.progressText {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  min-width: 80px;
+  text-align: right;
+}
+
+.warning {
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.warningWarning {
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(251, 191, 36, 0.5);
+  color: #92400e;
+}
+
+.warningCritical {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  color: #991b1b;
+}
+
+.warning p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.refreshButton {
+  padding: 0.75rem 1.5rem;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.refreshButton:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.refreshButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 圧縮品質オプション */
+.qualityOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.qualityOption {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: white;
+}
+
+.qualityOption:hover {
+  border-color: var(--bg-gradient-start);
+  background: rgba(139, 92, 246, 0.02);
+}
+
+.qualityOptionActive {
+  border-color: var(--bg-gradient-start);
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.2);
+}
+
+.qualityOption input[type="radio"] {
+  margin-top: 0.25rem;
+  cursor: pointer;
+}
+
+.qualityOptionContent {
+  flex: 1;
+}
+
+.qualityOptionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.qualityOptionName {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+.qualityOptionCurrent {
+  font-size: 0.85rem;
+  color: var(--bg-gradient-start);
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  background: rgba(139, 92, 246, 0.1);
+  border-radius: 4px;
+}
+
+.qualityOptionDescription {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+.savingMessage {
+  margin: 1rem 0 0 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* 有料機能 */
+.licenseStatus {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.licenseInfo {
+  padding: 1rem;
+  background: rgba(76, 175, 80, 0.1);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  border-radius: 8px;
+}
+
+.licenseInfo p {
+  margin: 0;
+  color: #2e7d32;
+  line-height: 1.8;
+}
+
+.licenseInput {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.licenseInputField {
+  padding: 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.licenseInputField:focus {
+  outline: none;
+  border-color: var(--bg-gradient-start);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.activateButton {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px var(--button-shadow);
+}
+
+.activateButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--button-shadow-hover);
+}
+
+.activateButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.deactivateButton {
+  padding: 0.75rem 1.5rem;
+  background: rgba(244, 67, 54, 0.1);
+  color: #d32f2f;
+  border: 1px solid rgba(244, 67, 54, 0.3);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.deactivateButton:hover:not(:disabled) {
+  background: rgba(244, 67, 54, 0.2);
+}
+
+.deactivateButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* データ管理 */
+.dataManagement {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.exportButton,
+.importButton {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.exportButton {
+  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+  color: white;
+  box-shadow: 0 2px 8px var(--button-shadow);
+}
+
+.exportButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--button-shadow-hover);
+}
+
+.importButton {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: var(--text-primary);
+}
+
+.importButton:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.exportButton:disabled,
+.importButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.importContainer {
+  position: relative;
+}
+
+/* アプリ情報 */
+.appInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.appInfoRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+}
+
+.appInfoLabel {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.appInfoValue {
+  color: var(--text-secondary);
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+  .container {
+    padding: 0.5rem;
+  }
+
+  .content {
+    padding: 1rem;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .backButton {
+    width: 100%;
+  }
+
+  .progressContainer {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .progressText {
+    text-align: left;
+    min-width: auto;
+  }
+}
+

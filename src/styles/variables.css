@@ -1,0 +1,29 @@
+/* カラーテーマ変数の定義 */
+:root {
+  /* 背景グラデーション */
+  --bg-gradient-start: #667eea;
+  --bg-gradient-end: #764ba2;
+  
+  /* カード背景色 */
+  --card-bg: rgba(250, 248, 255, 0.95);
+  --card-gradient-start: #faf8ff;
+  --card-gradient-end: #f0edf5;
+  
+  /* ホバー時のグラデーション */
+  --hover-gradient-start: #667eea;
+  --hover-gradient-end: #764ba2;
+  
+  /* テキスト色 */
+  --text-primary: #333;
+  --text-secondary: #666;
+  
+  /* ボーダー・シャドウ */
+  --border-color: #ccc;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --shadow-hover-color: rgba(102, 126, 234, 0.4);
+  
+  /* ボタンの影 */
+  --button-shadow: rgba(102, 126, 234, 0.3);
+  --button-shadow-hover: rgba(102, 126, 234, 0.4);
+}
+
